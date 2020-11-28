@@ -23,27 +23,25 @@
 #include <Wire.h>
 
 #define LTR390_I2CADDR_DEFAULT 0x53 ///< I2C address
-#define LTR390_MAIN_CTRL 0x00        ///< Main control register
-#define LTR390_MEAS_RATE 0x04 ///< Resolution and data rate
-#define LTR390_GAIN 0x05        ///< ALS and UVS gain range
-#define LTR390_PART_ID 0x06        ///< Part id/revision register
-#define LTR390_MAIN_STATUS 0x07        ///< Main status register
-#define LTR390_ALSDATA 0x0D        ///< ALS data lowest byte
-#define LTR390_UVSDATA 0x10        ///< UVS data lowest byte
-#define LTR390_INT_CFG 0x19      ///< Interrupt configuration
-#define LTR390_INT_PST 0x1A      ///< Interrupt persistance config
-#define LTR390_THRESH_UP 0x21      ///< Upper threshold, low byte
+#define LTR390_MAIN_CTRL 0x00       ///< Main control register
+#define LTR390_MEAS_RATE 0x04       ///< Resolution and data rate
+#define LTR390_GAIN 0x05            ///< ALS and UVS gain range
+#define LTR390_PART_ID 0x06         ///< Part id/revision register
+#define LTR390_MAIN_STATUS 0x07     ///< Main status register
+#define LTR390_ALSDATA 0x0D         ///< ALS data lowest byte
+#define LTR390_UVSDATA 0x10         ///< UVS data lowest byte
+#define LTR390_INT_CFG 0x19         ///< Interrupt configuration
+#define LTR390_INT_PST 0x1A         ///< Interrupt persistance config
+#define LTR390_THRESH_UP 0x21       ///< Upper threshold, low byte
 #define LTR390_THRESH_LOW 0x24      ///< Lower threshold, low byte
-
 
 typedef enum {
   LTR390_MODE_ALS,
   LTR390_MODE_UVS,
 } ltr390_mode_t;
 
-
 typedef enum {
-  LTR390_GAIN_1,
+  LTR390_GAIN_1 = 0,
   LTR390_GAIN_3,
   LTR390_GAIN_6,
   LTR390_GAIN_9,
@@ -58,9 +56,6 @@ typedef enum {
   LTR390_RESOLUTION_16BIT,
   LTR390_RESOLUTION_13BIT,
 } ltr390_resolution_t;
-
-
-
 
 /*!
  *    @brief  Class that stores state and functions for interacting with
@@ -86,7 +81,8 @@ public:
 
   void setThresholds(uint32_t lower, uint32_t higher);
 
-  void configInterrupt(bool enable, ltr390_mode_t source, uint8_t persistance=0);
+  void configInterrupt(bool enable, ltr390_mode_t source,
+                       uint8_t persistance = 0);
 
   bool newDataAvailable(void);
   uint32_t readUVS(void);
