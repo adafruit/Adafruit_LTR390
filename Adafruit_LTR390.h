@@ -35,11 +35,13 @@
 #define LTR390_THRESH_UP 0x21       ///< Upper threshold, low byte
 #define LTR390_THRESH_LOW 0x24      ///< Lower threshold, low byte
 
+/*!    @brief  Whether we are measuring ambient or UV light  */
 typedef enum {
   LTR390_MODE_ALS,
   LTR390_MODE_UVS,
 } ltr390_mode_t;
 
+/*!    @brief  Sensor gain for UV or ALS  */
 typedef enum {
   LTR390_GAIN_1 = 0,
   LTR390_GAIN_3,
@@ -48,6 +50,7 @@ typedef enum {
   LTR390_GAIN_18,
 } ltr390_gain_t;
 
+/*!    @brief Measurement resolution (higher res means slower reads!)  */
 typedef enum {
   LTR390_RESOLUTION_20BIT,
   LTR390_RESOLUTION_19BIT,

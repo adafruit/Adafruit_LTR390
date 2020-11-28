@@ -72,6 +72,10 @@ bool Adafruit_LTR390::begin(TwoWire *theWire) {
   return true;
 }
 
+/*!
+ *  @brief  Perform a soft reset with 10ms delay.
+ *  @returns True on success (reset bit was cleared post-write)
+ */
 bool Adafruit_LTR390::reset(void) {
   Adafruit_I2CRegister mainreg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MAIN_CTRL);
@@ -89,20 +93,37 @@ bool Adafruit_LTR390::reset(void) {
   return true;
 }
 
+/*!
+ *  @brief  Checks if new data is available in data register
+ *  @returns True on new data available
+ */
 bool Adafruit_LTR390::newDataAvailable(void) { return DataReadyBit->read(); }
 
+/*!
+ *  @brief  Read 3-bytes out of ambient data register, does not check if data is
+ * new!
+ *  @returns Up to 20 bits, right shifted into a 32 bit int
+ */
 uint32_t Adafruit_LTR390::readALS(void) {
   Adafruit_I2CRegister datareg =
       Adafruit_I2CRegister(i2c_dev, LTR390_ALSDATA, 3, LSBFIRST);
   return datareg.read();
 }
 
+/*!
+ *  @brief  Read 3-bytes out of UV data register, does not check if data is new!
+ *  @returns Up to 20 bits, right shifted into a 32 bit int
+ */
 uint32_t Adafruit_LTR390::readUVS(void) {
   Adafruit_I2CRegister datareg =
       Adafruit_I2CRegister(i2c_dev, LTR390_UVSDATA, 3, LSBFIRST);
   return datareg.read();
 }
 
+/*!
+ *  @brief  Enable or disable the light sensor
+ *  @param  en True to enable, False to disable
+ */
 void Adafruit_LTR390::enable(bool en) {
   Adafruit_I2CRegister mainreg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MAIN_CTRL);
@@ -112,6 +133,10 @@ void Adafruit_LTR390::enable(bool en) {
   enbit.write(en);
 }
 
+/*!
+ *  @brief  Read the enabled-bit from the sensor
+ *  @returns True if enabled
+ */
 bool Adafruit_LTR390::enabled(void) {
   Adafruit_I2CRegister mainreg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MAIN_CTRL);
@@ -121,6 +146,11 @@ bool Adafruit_LTR390::enabled(void) {
   return enbit.read();
 }
 
+/*!
+ *  @brief  Set the sensor mode to EITHER ambient (LTR390_MODE_ALS) or UV
+ * (LTR390_MODE_UVS)
+ *  @param  mode The desired mode - LTR390_MODE_UVS or LTR390_MODE_ALS
+ */
 void Adafruit_LTR390::setMode(ltr390_mode_t mode) {
   Adafruit_I2CRegister mainreg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MAIN_CTRL);
@@ -130,6 +160,10 @@ void Adafruit_LTR390::setMode(ltr390_mode_t mode) {
   modebit.write(mode);
 }
 
+/*!
+ *  @brief  get the sensor's mode
+ *  @returns The current mode - LTR390_MODE_UVS or LTR390_MODE_ALS
+ */
 ltr390_mode_t Adafruit_LTR390::getMode(void) {
   Adafruit_I2CRegister mainreg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MAIN_CTRL);
@@ -139,6 +173,11 @@ ltr390_mode_t Adafruit_LTR390::getMode(void) {
   return (ltr390_mode_t)modebit.read();
 }
 
+/*!
+ *  @brief  Set the sensor gain
+ *  @param  gain The desired gain: LTR390_GAIN_1, LTR390_GAIN_3, LTR390_GAIN_6
+ *  LTR390_GAIN_9 or LTR390_GAIN_18
+ */
 void Adafruit_LTR390::setGain(ltr390_gain_t gain) {
   Adafruit_I2CRegister gainreg = Adafruit_I2CRegister(i2c_dev, LTR390_GAIN);
   Adafruit_I2CRegisterBits gainbits =
@@ -147,6 +186,11 @@ void Adafruit_LTR390::setGain(ltr390_gain_t gain) {
   gainbits.write(gain);
 }
 
+/*!
+ *  @brief  Get the sensor's gain
+ *  @returns gain The current gain: LTR390_GAIN_1, LTR390_GAIN_3, LTR390_GAIN_6
+ *  LTR390_GAIN_9 or LTR390_GAIN_18
+ */
 ltr390_gain_t Adafruit_LTR390::getGain(void) {
   Adafruit_I2CRegister gainreg = Adafruit_I2CRegister(i2c_dev, LTR390_GAIN);
   Adafruit_I2CRegisterBits gainbits =
@@ -155,6 +199,12 @@ ltr390_gain_t Adafruit_LTR390::getGain(void) {
   return (ltr390_gain_t)gainbits.read();
 }
 
+/*!
+ *  @brief  Set the sensor resolution. Higher resolutions take longer to read!
+ *  @param  res The desired resolution: LTR390_RESOLUTION_13BIT,
+ *  LTR390_RESOLUTION_16BIT, LTR390_RESOLUTION_17BIT, LTR390_RESOLUTION_18BIT,
+ *  LTR390_RESOLUTION_19BIT or LTR390_RESOLUTION_20BIT
+ */
 void Adafruit_LTR390::setResolution(ltr390_resolution_t res) {
   Adafruit_I2CRegister ratereg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MEAS_RATE);
@@ -164,6 +214,12 @@ void Adafruit_LTR390::setResolution(ltr390_resolution_t res) {
   resbits.write(res);
 }
 
+/*!
+ *  @brief  Get the sensor's resolution
+ *  @returns The current resolution: LTR390_RESOLUTION_13BIT,
+ *  LTR390_RESOLUTION_16BIT, LTR390_RESOLUTION_17BIT, LTR390_RESOLUTION_18BIT,
+ *  LTR390_RESOLUTION_19BIT or LTR390_RESOLUTION_20BIT
+ */
 ltr390_resolution_t Adafruit_LTR390::getResolution(void) {
   Adafruit_I2CRegister ratereg =
       Adafruit_I2CRegister(i2c_dev, LTR390_MEAS_RATE);
@@ -173,6 +229,12 @@ ltr390_resolution_t Adafruit_LTR390::getResolution(void) {
   return (ltr390_resolution_t)resbits.read();
 }
 
+/*!
+ *  @brief  Set the interrupt output threshold range for lower and upper.
+ *  When the sensor is below the lower, or above upper, interrupt will fire
+ *  @param  lower The lower value to compare against the data register.
+ *  @param  higher The higher value to compare against the data register.
+ */
 void Adafruit_LTR390::setThresholds(uint32_t lower, uint32_t higher) {
   Adafruit_I2CRegister lowreg =
       Adafruit_I2CRegister(i2c_dev, LTR390_THRESH_LOW, 3, LSBFIRST);
@@ -183,6 +245,15 @@ void Adafruit_LTR390::setThresholds(uint32_t lower, uint32_t higher) {
   upreg.write(higher);
 }
 
+/*!
+ *  @brief  Configure the interrupt based on the thresholds in setThresholds()
+ *  When the sensor is below the lower, or above upper thresh, interrupt will
+ * fire
+ *  @param  enable Whether the interrupt output is enabled
+ *  @param  source Whether to use the ALS or UVS data register to compare
+ *  @param  persistance The number of consecutive out-of-range readings before
+ *          we fire the IRQ. Default is 0 (each reading will fire)
+ */
 void Adafruit_LTR390::configInterrupt(bool enable, ltr390_mode_t source,
                                       uint8_t persistance) {
   Adafruit_I2CRegister intcfgreg =
