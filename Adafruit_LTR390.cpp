@@ -184,3 +184,37 @@ ltr390_resolution_t Adafruit_LTR390::getResolution(void) {
   return (ltr390_resolution_t)resbits.read();
 }
 
+
+void Adafruit_LTR390::setThresholds(uint32_t lower, uint32_t higher) {
+  Adafruit_I2CRegister lowreg =
+    Adafruit_I2CRegister(i2c_dev, LTR390_THRESH_LOW, 3, LSBFIRST);
+  lowreg.write(lower);
+
+  Adafruit_I2CRegister upreg =
+    Adafruit_I2CRegister(i2c_dev, LTR390_THRESH_UP, 3, LSBFIRST);
+  upreg.write(higher);
+}
+
+void Adafruit_LTR390::configInterrupt(bool enable, ltr390_mode_t source, uint8_t persistance) {
+  Adafruit_I2CRegister intcfgreg =
+    Adafruit_I2CRegister(i2c_dev, LTR390_INT_CFG);
+  Adafruit_I2CRegisterBits enbit =
+    Adafruit_I2CRegisterBits(&intcfgreg, 1, 2); // # bits, bit_shift
+
+  enbit.write(enable);
+  
+  Adafruit_I2CRegisterBits srcbits =
+    Adafruit_I2CRegisterBits(&intcfgreg, 2, 4); // # bits, bit_shift
+  if (source == LTR390_MODE_ALS) {
+    srcbits.write(1);
+  }
+  if (source == LTR390_MODE_UVS) {
+    srcbits.write(3);
+  }
+
+  Adafruit_I2CRegister persreg =
+    Adafruit_I2CRegister(i2c_dev, LTR390_INT_PST);
+  Adafruit_I2CRegisterBits pstbits =
+    Adafruit_I2CRegisterBits(&persreg, 4, 4); // # bits, bit_shift
+  pstbits.write(persistance);
+}

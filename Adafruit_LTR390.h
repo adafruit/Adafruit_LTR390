@@ -30,7 +30,10 @@
 #define LTR390_MAIN_STATUS 0x07        ///< Main status register
 #define LTR390_ALSDATA 0x0D        ///< ALS data lowest byte
 #define LTR390_UVSDATA 0x10        ///< UVS data lowest byte
-
+#define LTR390_INT_CFG 0x19      ///< Interrupt configuration
+#define LTR390_INT_PST 0x1A      ///< Interrupt persistance config
+#define LTR390_THRESH_UP 0x21      ///< Upper threshold, low byte
+#define LTR390_THRESH_LOW 0x24      ///< Lower threshold, low byte
 
 
 typedef enum {
@@ -80,6 +83,10 @@ public:
 
   void setResolution(ltr390_resolution_t res);
   ltr390_resolution_t getResolution(void);
+
+  void setThresholds(uint32_t lower, uint32_t higher);
+
+  void configInterrupt(bool enable, ltr390_mode_t source, uint8_t persistance=0);
 
   bool newDataAvailable(void);
   uint32_t readUVS(void);
