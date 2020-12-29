@@ -4,7 +4,9 @@ Adafruit_LTR390 [![Build Status](https://github.com/adafruit/Adafruit_LTR390/wor
 This is the Adafruit LTR390 UV sensor library
 
 Tested and works great with the [Adafruit LTR390 Breakout Board](http://www.adafruit.com/)
+
 [<img src="assets/board.png?raw=true" width="500px">](https://www.adafruit.com/products/4831)
+
 This chip uses I2C to communicate, 2 pins are required to interface
 
 Adafruit invests time and resources providing this open source code,
