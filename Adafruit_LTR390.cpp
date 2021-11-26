@@ -8,7 +8,7 @@
  * 	I2C Driver for the LTR390 I2C UV and Light sensor
  *
  * 	This is a library for the Adafruit LTR390 breakout:
- * 	http://www.adafruit.com/
+ * 	https://www.adafruit.com/product/4831
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
@@ -85,6 +85,13 @@ bool Adafruit_LTR390::reset(void) {
   // this write will fail because it resets before acking?
   softreset.write(1);
   delay(10);
+
+  // Missing ACK from above soft-reset cause permanent bus issue with
+  // port such as nRF52, RP2040. Re-init I2C peripherals is required for
+  // recovery
+  i2c_dev->end();
+  i2c_dev->begin();
+
   // however it does reset, check that the value is zero
   if (softreset.read()) {
     return false;

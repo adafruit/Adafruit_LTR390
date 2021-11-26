@@ -3,7 +3,7 @@ Adafruit_LTR390 [![Build Status](https://github.com/adafruit/Adafruit_LTR390/wor
 
 This is the Adafruit LTR390 UV sensor library
 
-Tested and works great with the [Adafruit LTR390 Breakout Board](http://www.adafruit.com/)
+Tested and works great with the [Adafruit LTR390 Breakout Board](https://www.adafruit.com/product/4831)
 
 [<img src="assets/board.png?raw=true" width="500px">](https://www.adafruit.com/products/4831)
 
